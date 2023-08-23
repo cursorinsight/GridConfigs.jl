@@ -1,0 +1,21 @@
+name = "GridConfigs"
+uuid = "a37d3d70-d8e4-491e-97f6-729d3aecb91e"
+authors = ["Cursor Insight <info@cursorinsight.com>"]
+version = "0.1.0"
+
+[deps]
+PackageExtensionCompat = "65ce6f38-6b18-4e1d-a461-8949797d7930"
+
+[weakdeps]
+JSON = "682c06a0-de6a-54ab-a142-c8b1cf79cde6"
+TOML = "fa267f1f-6049-4f14-aa54-33bafae1ed76"
+YAML = "ddb6d928-2868-570f-bddf-ab3f9cf99eb6"
+
+[extensions]
+JSONExt = "JSON"
+TOMLExt = "TOML"
+YAMLExt = "YAML"
+
+[compat]
+PackageExtensionCompat = "1"
+julia = "1.6"
