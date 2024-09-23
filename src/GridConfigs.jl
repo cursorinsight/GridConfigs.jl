@@ -22,6 +22,7 @@ import Base: getindex, haskey, setindex!
 import Base: keys, pairs, values
 import Base: getproperty, hasproperty, propertynames, setproperty!
 import Base: ==, hash, iterate, length, show
+import Base: empty, filter
 
 ###=============================================================================
 ### Implementation
@@ -90,8 +91,10 @@ function setindex!(config::GridConfig, value, idx::AbstractString)
     return subconfig[last] = value
 end
 
+struct MissingMarker end
+
 function haskey(config::GridConfig, key::AbstractString)::Bool
-    config[key] !== nothing
+    config[key, default = MissingMarker()] !== MissingMarker()
 end
 
 function keys(config::GridConfig)::Vector{String}
@@ -162,6 +165,18 @@ function show(io::IO, config::GridConfig)
             limit && n >= 10 && (print(io, "…"); break)
         end
     end
+end
+
+empty(::GridConfig) = GridConfig()
+
+function filter(f, config::GridConfig)::GridConfig
+    filtered = empty(config)
+    for pair in config
+        if f(pair)
+            filtered[pair.first] = pair.second
+        end
+    end
+    return filtered
 end
 
 """

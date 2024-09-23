@@ -26,7 +26,8 @@ import JSON, TOML, YAML
 
 @testset "Aqua            " begin
     using GridConfigs
-    aqua(GridConfigs; project_toml_formatting = (VERSION >= v"1.7"))
+    #  don't test for compat values on weakdeps, because 1.6 can't do it
+    aqua(GridConfigs; deps_compat = (check_weakdeps = false,))
 end
 
 @testset "GridConfig()    " begin
@@ -36,6 +37,18 @@ end
     @test length(config) == 0
     @test collect(keys(config)) == []
     @test collect(values(config)) == []
+
+    # nothing as a value
+    config.empty = nothing
+    @test !isempty(config)
+    @test length(config) == 1
+    @test haskey(config, "empty")
+    @test config.empty === nothing
+    @test !haskey(config, "missing")
+    @test config.missing === nothing
+
+    # empty
+    @test empty(config) == GridConfig()
 end
 
 @testset "GridConfig: $format" for format in [JSON, TOML, YAML]
@@ -108,6 +121,12 @@ end
 
     # as_namedtuple
     @test as_namedtuple(config.a) == (x = 2, y = 1.0)
+
+    # filter
+    let filtered = filter(contains("o") ∘ first, config)
+        @test length(filtered) == 3
+        @test keys(filtered) == ["b.foo", "c.x.one", "c.x.two"]
+    end
 
     # unfold
     @test unfold(config) == [config]
