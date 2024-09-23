@@ -1,7 +1,7 @@
 name = "GridConfigs"
 uuid = "a37d3d70-d8e4-491e-97f6-729d3aecb91e"
 authors = ["Cursor Insight <info@cursorinsight.com>"]
-version = "0.1.0"
+version = "0.1.1"
 
 [deps]
 PackageExtensionCompat = "65ce6f38-6b18-4e1d-a461-8949797d7930"
